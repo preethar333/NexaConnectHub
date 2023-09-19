@@ -1,0 +1,74 @@
+<% var Name='' ; var Email='' ; var Description='' ; var NameError='' ; var EmailError='' ; var
+  DescriptionError='' ; if(typeof(er) !='undefined' ) { for(var error of er) { switch(error.param){
+  case 'Name' : Name=error.value; NameError=error.msg; break; case 'Email' : Email=error.value;
+  EmailError=error.msg; break; case 'Description' : Description=error.value;
+  DescriptionError=error.msg; break; } } } %>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Home</title>
+  </head>
+
+  <body>
+    <nav>
+      <a href="/blogs">View All Blogs</a>
+      <a href="/login">login</a>
+      <a href="/signup">Signup</a>
+      <a href="/">Add New Blog</a> 
+    </nav>
+    <main>
+      <h1>Blog</h1>
+      <form action="process" method="POST" enctype="multipart/form-data">
+        <div class="wrapper">
+          <label for="Image"> Image</label>
+          <input type="file" id="Image" name="Image">
+        </div>
+        <div class="wrapper">
+          <label for="Name"> Name</label>
+          <input type="text" id="Name" name="Name" value="<%= Name %>">
+          <p class="error">
+            <%= NameError %>
+          </p>
+        </div>
+        <div class="wrapper">
+          <label for="Email"> Email</label>
+          <input type="text" id="Email" name="Email" value="<%= Email %>">
+          <p class="error">
+            <%= EmailError %>
+          </p>
+        </div>
+        <div class="wrapper">
+          <label for="Description"> Description</label>
+          <input type="text" id="Description" name="Description">
+          <p class="error">
+            <%= DescriptionError %>
+          </p>
+        </div>
+        <div class="submission">
+          <input type="submit" value="Submit Blog!">
+        </div>
+      </form>
+
+    </main>
+
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/tinymce/jquery.tinymce.min.js"></script>
+    <script src="js/tinymce/tinymce.min.js"></script>
+    <script>
+      tinymce.init({
+        selector: '#Description',
+        height: 200,
+      })
+    </script>
+  </body>
+
+  </html>

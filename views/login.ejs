@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Login</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/blogs">View All Blogs</a>
+        <a href="/login">login</a>
+        <a href="/signup">Signup</a>
+        <a href="/">Add New Blog</a> 
+      </nav>
+    <main>
+        <h1>Login</h1>
+        <form action="signin" method="POST">
+
+            <div class="wrapper">
+                <label for="userName">User Name</label>
+                <input type="text" id="userName" name="userName">
+            </div>
+            <div class="wrapper">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="submission">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+
+    </main>
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/tinymce/jquery.tinymce.min.js"></script>
+    <script src="js/tinymce/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#Description',
+            height: 200,
+        })
+    </script>
+</body>
+
+</html>
