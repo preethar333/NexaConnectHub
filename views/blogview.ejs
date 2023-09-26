@@ -10,6 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <title>blog</title>
+  <style>
+    .pay-button {
+        display: inline-block;
+        background-color: #9EB09F;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .pay-button:hover {
+        background-color: #4B5B4C;
+    }
+</style>
+
 </head>
 
 <body class="blog">
@@ -47,6 +66,11 @@
               <th> Image: </th>
               <td>
                 <img src="<%=blog.ImagePath%>" alt="No image found" height="200">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <a href="/payment?blogid=<%= blog._id %>" class="pay-button">Pay Now</a>
               </td>
             </tr>
 

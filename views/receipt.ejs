@@ -1,0 +1,47 @@
+<!-- receipt.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        /* Embedded CSS styles for the receipt page */
+        body {
+            padding: 20px;
+            background-size: cover;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #4B5B4C;
+            background-color: #ecf6ec;
+        }
+
+        .receipt-container {
+            width: 400px;
+            margin: 20px auto;
+            border: 2px solid #9EB09F;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-weight: normal;
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <h1>Receipt</h1>
+        <p>Payment ID: <%= payment._id %></p>
+        <p>Amount Paid: $<%= payment.amount %></p>
+        <p>Cardholder Name: <%= payment.cardHolderName %></p>
+        <!-- Display other payment details here -->
+    </div>
+</body>
+</html>
