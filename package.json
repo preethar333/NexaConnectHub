@@ -18,6 +18,7 @@
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
     "mongoose": "^7.4.0",
+    "paypal-rest-sdk": "^1.8.1",
     "stripe": "^13.7.0"
   }
 }

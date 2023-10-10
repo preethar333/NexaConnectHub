@@ -59,25 +59,25 @@
 </head>
 <body>
     <form action="/processPayment" method="POST">
-        <h2>Payment Details</h2>
+        <h2>Pay Now</h2>
         <div class="form-group">
-            <label for="amount">Amount:</label>
+            <label for="amount">Amount in USD:</label>
             <input type="number" id="amount" name="amount" required>
         </div>
     
         <div class="form-group">
-            <label for="cardNumber">Card Number:</label>
-            <input type="text" id="cardNumber" name="cardNumber" required>
-        </div>
-    
-        <div class="form-group">
-            <label for="cardHolderName">Cardholder Name:</label>
+            <label for="cardHolderName"> Name:</label>
             <input type="text" id="cardHolderName" name="cardHolderName" required>
         </div>
     
         <div class="form-group">
-            <label for="expirationDate">Expiration Date:</label>
-            <input type="text" id="expirationDate" name="expirationDate" placeholder="MM/YY" required>
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" placeholder="country" required>
         </div>
     
         <div class="form-group">

@@ -15,9 +15,7 @@ body.card footer{
     color: black;
 }
 main{
-    width: 400px;
-    margin: 20px auto;
-    border: 2px solid #9EB09F;
+    margin: 0;
     border-radius: 10px;
     padding: 20px;
 }

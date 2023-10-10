@@ -10,8 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <title>blog</title>
-  <style>
-    .pay-button {
+ 
+    <style>
+  
+      .blogGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding:20px;
+        margin:20px;
+      }
+  
+      .blogData {
+       
+        border-radius: 10px;
+        padding: 20px;
+        border: 2px solid #4B5B4C;
+      }
+  
+      .pay-button {
         display: inline-block;
         background-color: #9EB09F;
         color: #fff;
@@ -22,65 +39,57 @@
         font-size: 16px;
         margin-top: 10px;
         cursor: pointer;
-    }
-
-    .pay-button:hover {
-        background-color: #4B5B4C;
-    }
-</style>
-
-</head>
-
-<body class="blog">
-  <nav>
-    <a href="/blogs">View All Blogs</a>
-    <a href="/login">login</a>
-    <a href="/signup">Signup</a>
-    <a href="/">Add New Blog</a> 
-  </nav>
-  <main>
-    <h1>Blog</h1>
-    <section>
-      <div class="blogData">
-        <% blogs.forEach(function(blog) { %>
-          <table>
-            <tr>
-              <th>Name: </th>
-              <td>
-                <%= blog.Name %>
-              </td>
-            </tr>
-            <tr>
-              <th>Email: </th>
-              <td>
-                <%= blog.Email %>
-              </td>
-            </tr>
-            <tr>
-              <th>Description: </th>
-              <td>
-                <%- blog.Description %>
-              </td>
-            </tr>
-            <tr>
-              <th> Image: </th>
-              <td>
-                <img src="<%=blog.ImagePath%>" alt="No image found" height="200">
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <a href="/payment?blogid=<%= blog._id %>" class="pay-button">Pay Now</a>
-              </td>
-            </tr>
-
-          </table>
-          <% }) %>
-      </div>
-    </section>
-  </main>
-
+      }
   
-</body>
-
-</html>
+      .pay-button:hover {
+        background-color: #4B5B4C;
+      }
+    </style>
+  </head>
+  
+  <body class="blog">
+    <nav>
+      <a href="/blogs">View All Blogs</a>
+      <a href="/login">Login</a>
+      <a href="/signup">Signup</a>
+      <a href="/">Add New Blog</a>
+    </nav>
+    <main>
+      <div class="container"> 
+        <h1>All Blogs</h1>
+        <section>
+          <div class="blogGrid">
+            <% blogs.forEach(function(blog) { %>
+              <div class="blogData">
+                <table>
+                  <tr>
+                    <th>Name: </th>
+                    <td><%= blog.Name %></td>
+                  </tr>
+                  <tr>
+                    <th>Email: </th>
+                    <td><%= blog.Email %></td>
+                  </tr>
+                  <tr>
+                    <th>Description: </th>
+                    <td><%- blog.Description %></td>
+                  </tr>
+                  <tr>
+                    <th>Image: </th>
+                    <td><img src="<%= blog.ImagePath %>" alt="No image found" height="200"></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <a href="/payment?blogid=<%= blog._id %>" class="pay-button">Pay Now</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            <% }) %>
+          </div>
+        </section>
+      </div> 
+    </main>
+  </body>
+  </html>
+  
