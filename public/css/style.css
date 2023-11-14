@@ -1,4 +1,4 @@
-body{
+body {
     padding: 20px;
     background-size: cover;
     font-family: Arial, Helvetica, sans-serif;
@@ -6,122 +6,73 @@ body{
     background-color: #ecf6ec;
 }
 
-body.card main{
+body.card main {
     background-size: cover;
     padding-bottom: 40px;
     border: 5px solid #4B5B4C;
 }
-body.card footer{
+
+body.card footer {
     color: black;
 }
-main{
+
+main {
     margin: 0;
     border-radius: 10px;
     padding: 20px;
 }
-main h1{
+
+main h1 {
     font-weight: normal;
     text-align: center;
 }
-main .wrapper{
+
+main .wrapper {
     margin: 10px;
 }
-main .wrapper label{
+
+main .wrapper label {
     display: inline-block;
     width: 150px;
     font-size: 20px;
+    margin-bottom: 10px; /* Added margin for spacing between labels */
 }
-main .wrapper input{
-    background-color: transparent;
+
+main .wrapper input[type="text"] {
+    width: calc(100% - 160px); /* Adjusted input width */
+    padding: 10px;
+    font-size: 16px;
     border: 1px solid #9EB09F;
-    font-size: 20px;
+    border-radius: 5px;
 }
-main .submission{
+
+main .submission {
     text-align: center;
     margin: 20px;
 }
-main .submission input{
+
+main .submission input[type="submit"] {
     border: 2px solid #4B5B4C;
     background-color: #9EB09F;
-
     font-size: 24px;
-    padding: 5px 10px;
-    border-radius: 10px 10px 0 0;
-}
-footer{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    text-align: center;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-.error{
+main .submission input[type="submit"]:hover {
+    background-color: #7f8c7d; /* Darker color on hover */
+}
+
+.error {
     font-size: 12px;
     color: #9f0b0a;
     text-align: right;
 }
-/* CSS for the payment form */
-.payment-form {
-    width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.payment-form h2 {
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 18px;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.form-group input[type="text"],
-.form-group input[type="number"] {
-    height: 40px;
-}
-
-.form-group input[type="text"]:focus,
-.form-group input[type="number"]:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-.btn-pay-now {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn-pay-now:hover {
-    background-color: #0056b3;
-}
 
 /* Media query for responsiveness */
 @media (max-width: 768px) {
-    .payment-form {
-        width: 100%;
+    main .wrapper input[type="text"] {
+        width: 100%; /* Full width on smaller screens */
     }
 }

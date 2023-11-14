@@ -28,7 +28,7 @@
         border: 2px solid #4B5B4C;
       }
   
-      .pay-button {
+      .pay-button, .edit-button, .delete-button {
         display: inline-block;
         background-color: #9EB09F;
         color: #fff;
@@ -41,7 +41,7 @@
         cursor: pointer;
       }
   
-      .pay-button:hover {
+      .pay-button, .edit-button, .delete-button:hover {
         background-color: #4B5B4C;
       }
     </style>
@@ -84,6 +84,8 @@
                     </td>
                   </tr>
                 </table>
+        <a href="/edit/<%= blog._id %>" class="edit-button">Edit</a>
+        <a href="/delete/<%= blog._id %>" class="delete-button">Delete</a>
               </div>
             <% }) %>
           </div>
