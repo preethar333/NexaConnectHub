@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <title>Admin Dashboard</title>
+
+  <style>
+    .postGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 20px;
+      margin: 20px;
+    }
+
+    .postData {
+      border-radius: 10px;
+      padding: 20px;
+      border: 2px solid #4B5B4C;
+    }
+
+    .approve-button {
+      display: inline-block;
+      background-color: #9EB09F;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .approve-button:hover {
+      background-color: #4B5B4C;
+    }
+
+    .delete-button {
+      display: inline-block;
+      background-color: #FF5733;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .delete-button:hover {
+      background-color: #FF2E00;
+    }
+  </style>
+</head>
+
+<body class="admin-dashboard">
+  <nav>
+    <a href="/admin-dashboard">Admin Dashboard</a>
+    <a href="/blogs">View All Blogs</a>
+    <a href="/education">View All Education Posts</a>
+    <a href="/crowdfunding">View All Crowdfunding Posts</a>
+    <% if (user) { %>
+      <!-- Display Logout when the user is logged in -->
+      <li><a href="/logout">Logout</a></li>
+    <% } else { %>
+      <!-- Display Login and Signup when the user is not logged in -->
+      <li><a href="/login">Login</a></li>
+      <li><a href="/signup">Signup</a></li>
+    <% } %>
+    
+  </nav>
+  <main>
+    <div class="container">
+      <h1>Admin Dashboard</h1>
+      <section>
+        <div class="postGrid">
+          <% blogPosts.forEach(function(blogPost) { %>
+            <div class="postData">
+              <!-- Display blog post information -->
+              <!-- Add approval and delete buttons for each post -->
+              <table>
+                <tr>
+                  <th>Name: </th>
+                  <td><%= blogPost.Name %></td>
+                </tr>
+                <tr>
+                  <th>Email: </th>
+                  <td><%= blogPost.Email %></td>
+                </tr>
+                <tr>
+                  <th>Description: </th>
+                  <td><%- blogPost.Description %></td>
+                </tr>
+                <tr>
+                  <th>Image: </th>
+                  <td><img src="<%= blogPost.ImagePath %>" alt="No image found" height="200"></td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <form action="/approve-blog/<%= blogPost._id %>" method="POST">
+                      <button class="approve-button" type="submit">Approve</button>
+                    </form>
+                    <form action="/delete-blog/<%= blogPost._id %>" method="POST">
+                      <button class="delete-button" type="submit">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          <% }) %>
+
+          <!-- Use similar form actions for approval and deletion -->
+          <% educationPosts.forEach(function(educationPost) { %>
+            <div class="postData">
+              <!-- Display education post information -->
+              <table>
+                <!-- ... (education post details) ... -->
+                <td colspan="2">
+                  <form action="/approve-education/<%= educationPost._id %>" method="POST">
+                    <button class="approve-button" type="submit">Approve</button>
+                  </form>
+                  <form action="/delete-education/<%= educationPost._id %>" method="POST">
+                    <button class="delete-button" type="submit">Delete</button>
+                  </form>
+                </td>
+              </table>
+            </div>
+          <% }) %>
+          <!-- Crowdfunding posts -->
+          <% crowdfundingPosts.forEach(function(crowdfundingPost) { %>
+            <div class="postData">
+              <!-- Display crowdfunding post information -->
+              <table>
+                <!-- ... (crowdfunding post details) ... -->
+                <td colspan="2">
+                  <form action="/approve-crowdfunding/<%= crowdfundingPost._id %>" method="POST">
+                    <button class="approve-button" type="submit">Approve</button>
+                  </form>
+                  <form action="/delete-crowdfunding/<%= crowdfundingPost._id %>" method="POST">
+                    <button class="delete-button" type="submit">Delete</button>
+                  </form>
+                </td>
+              </table>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>

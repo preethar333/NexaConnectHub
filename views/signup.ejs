@@ -1,3 +1,4 @@
+<!-- signup.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,49 +6,77 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>Signup</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif; /* Set your preferred font family */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #4B5B4C; /* Set your heading color */
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px 0 20px;
+            width: 30%;
+            box-sizing: border-box;
+        }
+        
+        input, select {
+            padding: 10px;
+            margin: 5px 0 20px;
+            width: 30%;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #9EB09F; /* Set your button background color */
+            color:white; /* Set your button text color */
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #6C7D6A; /* Set your button background color on hover */
+        }
+    </style>
 </head>
 
 <body>
-    <nav>
-        <a href="/blogs">View All Blogs</a>
-        <a href="/login">login</a>
-        <a href="/signup">Signup</a>
-        <a href="/">Add New Blog</a> 
-      </nav>
-    <main>
-        <h1>Signup</h1>
-        <form action="createaccount" method="POST">
-
-            <div class="wrapper">
-                <label for="userName">User Name</label>
-                <input type="text" id="userName" name="userName">
-            </div>
-            <div class="wrapper">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password">
-            </div>
-            <div class="submission">
-                <input type="submit" value="Create Account">
-            </div>
-        </form>
-
-    </main>
-
+    <h1>Signup</h1>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="js/tinymce/jquery.tinymce.min.js"></script>
-    <script src="js/tinymce/tinymce.min.js"></script>
-    <script>
-        tinymce.init({
-            selector: '#Description',
-            height: 200,
-        })
-    </script>
+    <form action="/createaccount" method="post">
+        <label for="userName">Username:</label>
+        <input type="text" id="userName" name="userName" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <label for="role">Role:</label>
+        <select id="role" name="role" required>
+            <option value="user">user</option>
+            <option value="admin">admin</option>
+        </select>
+        <br>
+        <!-- Additional input for admin code -->
+        <label for="adminCode">Admin Code:</label>
+        <input type="text" id="adminCode" name="adminCode">
+        <br>
+        <input type="submit" value="Signup">
+    </form>
 </body>
 
 </html>
