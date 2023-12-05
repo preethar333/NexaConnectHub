@@ -145,24 +145,78 @@
     footer:hover {
       background-color: #2a3d33;
     }
+    .postGrid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .postData {
+      margin: 10px 0;
+    }
+
+    .card {
+      width: 100%;
+    }
+
+    .postGrid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .postRow {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px; /* Adjust margin as needed */
+    }
+
+    .postData {
+      width: 30%; /* Adjust width as needed */
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px; /* Adjust margin as needed */
+    }
+
+    .table {
+      width: 100%;
+    }
+
+    .img-fluid {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .pay-now-button {
+  display: inline-block;
+  background-color: #4B5B4C;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.pay-now-button:hover {
+  background-color: #9EB09F;
+}
+.pay-now-button>a {
+  color:white;
+  text-decoration: none;
+}
+
   </style>
 
 </head>
 
 <body class="home">
-  <nav>
-    <a href="/">Home</a>
-    <a href="/blogs">View All Blogs</a>
-    <a href="/education">View All Education Posts</a>
-    <a href="/crowdfunding">View All Crowdfunding Posts</a>
-    <% if (user) { %>
-      <span style="color:white">Welcome, <%= user.username %></span>
-      <a href="/logout">Logout</a>
-    <% } else { %>
-      <a href="/login">Login</a>
-      <a href="/signup">Signup</a>
-    <% } %>
-  </nav>
+  <%- include('nav') %>
   <header class="carousel">
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -219,11 +273,8 @@
       <h1 class="text-center">Latest Posts</h1>
       <section>
         <div class="postGrid">
-            <% console.log("Grouped Posts:", groupedPosts); %>
-
+  
           <% groupedPosts.forEach(function(row) { %>
-            <% console.log("Grouped Posts:", groupedPosts); %>
-
             <div class="postRow">
               <% row.forEach(function(post) { %>
                 <div class="postData">
@@ -243,15 +294,29 @@
                     </tr>
                     <tr>
                       <th>Image: </th>
-                      <td><img src="<%= post.ImagePath %>" alt="No image found" class="img-fluid" ></td>
+                      <td><img src="<%= post.ImagePath %>" alt="No image found" class="img-fluid"></td>
                     </tr>
                   </table>
+                  <div class="pay-now-button">
+                    <% if (post.postType === 'education') { %>
+                      <!-- Button for education post -->
+                      <a href="/payment?blogid=<%= post.educationPostId %>" class="pay-button">Pay Now</a>
+                    <% } else if (post.postType === 'crowdfunding') { %>
+                      <!-- Button for crowdfunding post -->
+                      <a href="/payment?blogid=<%= post.crowdfundingPostId %>" class="pay-button">Pay Now</a>
+                    <% } %>                  
+                  </div>
                 </div>
               <% }) %>
             </div>
           <% }) %>
+  
         </div>
       </section>
+  
+        </div>
+      </main>
+      
 
       <!-- About Us Section -->
       <section class="about-us">
@@ -277,9 +342,8 @@
     </div>
   </main>
 
-  <footer>
-    <p>&copy; 2023 Nexaconnect Hub, Team-07. All rights reserved.</p>
-  </footer>
+  <%- include('footer') %>
+
 
   <!-- Bootstrap JS (popper.js and jquery.js are required for Bootstrap) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

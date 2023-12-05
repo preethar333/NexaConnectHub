@@ -9,13 +9,12 @@ const fs = require('fs');
 
 mongoose.connect('mongodb://127.0.0.1:27017/NexaConnect');
 
-const Blog = mongoose.model('Blog', {
+const ApprovedPost = mongoose.model('ApprovedPost', {
     Name: String,
     Email: String,
     Description: String,
     ImagePath: String,
-    approved: { type: Boolean, default: false },
-
+    postType: { type: String },
 });
 
 const Education = mongoose.model('Education', {
@@ -25,6 +24,7 @@ const Education = mongoose.model('Education', {
     Description: String,
     ImagePath: String,
     approved: { type: Boolean, default: false },
+    postType: { type: String, default: 'education' },
 
 });
 
@@ -35,6 +35,7 @@ const Crowdfunding = mongoose.model('Crowdfunding', {
     Description: String,
     ImagePath: String,
     approved: { type: Boolean, default: false },
+    postType: { type: String, default: 'crowdfunding' },
 
 });
 
@@ -87,20 +88,13 @@ const shuffleArray = (array) => {
     return array;
 };
 
-myApp.get('/add-post', (req, res) => {
-    res.render('add-post'); // Make sure you have an 'add-post.ejs' file in your views folder
-  });
-
   myApp.get('/about-us', (req, res) => {
-    res.render('about-us'); // Make sure you have an 'add-post.ejs' file in your views folder
+    res.render('about-us', { user: req.user }); // Make sure you have an 'add-post.ejs' file in your views folder
   });
 
 // Homepage route
 myApp.get('/', async (req, res) => {
     try {
-        // Fetch approved blog posts
-        const approvedBlogPosts = await Blog.find({ approved: true });
-
         // Fetch approved education posts
         const approvedEducationPosts = await Education.find({ approved: true });
 
@@ -108,7 +102,7 @@ myApp.get('/', async (req, res) => {
         const approvedCrowdfundingPosts = await Crowdfunding.find({ approved: true });
 
         // Combine posts from all sources
-        const allApprovedPosts = [...approvedBlogPosts, ...approvedEducationPosts, ...approvedCrowdfundingPosts];
+        const allApprovedPosts = [ ...approvedEducationPosts, ...approvedCrowdfundingPosts];
 
         // Shuffle the combined array of approved posts
         const shuffledPosts = shuffleArray(allApprovedPosts);
@@ -225,38 +219,12 @@ myApp.get('/logout', (req, res) => {
 });
 
 
-myApp.post('/process', [
-    check('Description', 'Please enter a description.').not().isEmpty(),
-    check('Email', 'Please enter a valid email').isEmail(),
-    check('Name', 'Please enter firstname and lastname').matches(nameRegex),
-], (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        res.render('home', { er: errors.array() });
-    } else {
-        res.render('signup', { errors: errors.array() });
-    }
-});
-
-
-myApp.get('/blogs', (req, res) => {
-    Blog.find({})
-        .then((blogs) => {
-            res.render('blogview', { blogs: blogs });
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-});
-
 myApp.post('/crowdfunding-process', [
     check('Name', 'Please enter a name.').not().isEmpty(),
     check('Email', 'Please enter a valid email').isEmail(),
     check('crowdfundingType', 'Please select a crowdfunding type.').not().isEmpty(),
     check('Description', 'Please enter a description.').not().isEmpty(),
-    // You can add additional validation as needed
-], (req, res) => {
+], async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -281,21 +249,29 @@ myApp.post('/crowdfunding-process', [
             crowdfundingType: crowdfundingType,
             Description: Description,
             ImagePath: 'images/' + ImageName,
+            postType: 'crowdfunding',  // Add postType
         };
 
         const crowdfundingPost = new Crowdfunding(crowdfundingData);
-        crowdfundingPost.save();
+        await crowdfundingPost.save();
 
-        const user = req.session.userId ? { username: req.session.username } : null;
-        
-        // Define crowdfundingPosts variable here
-        const crowdfundingPosts = [crowdfundingData];
+        try {
+            // Fetch all crowdfunding posts from the database
+            const crowdfundingPosts = await Crowdfunding.find({ postType: 'crowdfunding' });  // Filter by postType
+            const user = req.session.userId ? { username: req.session.username } : null;
 
-        console.log('Crowdfunding Posts:', crowdfundingPosts);
+            console.log('Crowdfunding Posts:', crowdfundingPosts);
 
-        res.render('crowdfundingview', { crowdfundingData, user });
+            res.render('crowdfundingview', { crowdfundingPosts, user });
+        } catch (err) {
+            console.error(err);
+            // Handle the error (e.g., render an error page)
+            res.status(500).send('Error fetching crowdfunding posts.');
+        }
     }
 });
+
+
 
 myApp.get('/crowdfunding', async (req, res) => {
     try {
@@ -324,22 +300,24 @@ myApp.get('/crowdfunding', async (req, res) => {
 
 res.render('add-crowdfunding', { Name, Email, Description, user});
 });
- 
 
 myApp.post('/education-process', [
-    check('Description', 'Please enter a description.').not().isEmpty(),
+    check('Name', 'Please enter a name.').not().isEmpty(),
     check('Email', 'Please enter a valid email').isEmail(),
-    check('Name', 'Please enter firstname and lastname').matches(nameRegex),
-], (req, res) => {
+    check('educationCategory', 'Please select a Category.').not().isEmpty(),
+    check('Description', 'Please enter a description.').not().isEmpty(),
+], async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        res.render('add-education', { er: errors.array() });
+        res.render('educationview', { er: errors.array() });
     } else {
         const Name = req.body.Name;
         const Email = req.body.Email;
+        const educationCategory = req.body.educationCategory; // Fix: Correct variable name
         const Description = req.body.Description;
 
+        // Handle image upload if needed
         const Image = req.files.Image;
         const ImageName = Image.name;
         const ImageSavePath = filePath + ImageName;
@@ -350,57 +328,111 @@ myApp.post('/education-process', [
         const educationData = {
             Name: Name,
             Email: Email,
-            educationCategory: req.body.educationCategory,
+            educationCategory: educationCategory, // Fix: Correct variable name
             Description: Description,
             ImagePath: 'images/' + ImageName,
         };
 
-        const educationPost = new Education(educationData);
-        educationPost.save();
+        const educationPost = new Education(educationData); // Fix: Correct variable name
+        await educationPost.save();
 
-        res.render('educationPost', educationData);
-        res.redirect('/education');
+        try {
+            // Fetch all crowdfunding posts from the database
+            const educationPosts = await Education.find({});
+            const user = req.session.userId ? { username: req.session.username } : null;
 
+            res.render('educationview', { educationPosts, user });
+        } catch (err) {
+            console.error(err);
+            // Handle the error (e.g., render an error page)
+            res.status(500).send('Error fetching education posts.');
+        }
     }
 });
 
-  myApp.get('/education', (req, res) => {
-    // Fetch the educationPosts data from your database
-    Education.find({})
-      .then((educationPosts) => {
-        res.render('educationview', { educationPosts: educationPosts,  user: req.session.userId ? { username: req.session.username } : null });
-      })
-      .catch((err) => {
+
+myApp.get('/education', async (req, res) => {
+    try {
+        // Fetch the educationPosts data from your database
+        const educationPosts = await Education.find({});
+        const user = req.session.userId ? { username: req.session.username } : null;
+
+        console.log('User:', user);
+
+        // Pass the educationPosts and user variables to the rendering context
+        res.render('educationview', { educationPosts, user });
+    } catch (err) {
         console.error(err);
         // Handle the error (e.g., render an error page)
-      });
+        res.status(500).send('Error fetching education posts.');
+    }
 });
 
 
-myApp.get('/add-education', (req, res) => {
+  myApp.get('/add-education', (req, res) => {
     const user = req.session.userId ? { username: req.session.username } : null;
-    const Name = req.body.Name || '';  // Use req.query instead of req.body
+    const Name = req.body.Name || '';  
     const Email = req.body.Email || '';
     const Description = req.body.Description || '';
 
-    // Define the errors variable or provide a default empty array
-    const errors = [];
-
-    res.render('add-education', { Name, Email, Description, user, er: errors });
+res.render('add-education', { Name, Email, Description, user});
 });
 
+// After approving a blog post
+const approvedBlogData = {
+    Name: 'Blog Title',
+    Email: 'author@example.com',
+    Description: 'Lorem ipsum...',
+    ImagePath: 'path/to/image.jpg',
+};
+
+const approvedBlogPost = new ApprovedPost(approvedBlogData);
+
+approvedBlogPost.save()
+    .then((savedPost) => {
+        console.log('Approved blog post saved:', savedPost);
+        // Handle the success, e.g., redirect to a confirmation page
+    })
+    .catch((error) => {
+        console.error('Error saving approved blog post:', error);
+        // Handle the error, e.g., show an error message
+    });
 
 
+// Add this route to your server code
+myApp.get('/blogs', async (req, res) => {
+    try {
+        // Fetch approved blog posts
+        const approvedBlogPosts = await ApprovedPost.find({});
 
-myApp.get('/blogview/:id', (req, res) => {
-    const blogId = req.params.id;
-    Blog.findById(blogId)
-        .then((blog) => {
-            res.render('blog', { blog });
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+        // Fetch approved education posts
+        const approvedEducationPosts = await Education.find({ approved: true });
+
+        // Fetch approved crowdfunding posts
+        const approvedCrowdfundingPosts = await Crowdfunding.find({ approved: true });
+
+        // Combine posts from all sources
+        const allApprovedPosts = [...approvedBlogPosts, ...approvedEducationPosts, ...approvedCrowdfundingPosts];
+
+        // Shuffle the combined array of approved posts
+        const shuffledPosts = shuffleArray(allApprovedPosts);
+
+        // Display three posts per row
+        const postsPerRow = 3;
+        const groupedPosts = [];
+        for (let i = 0; i < shuffledPosts.length; i += postsPerRow) {
+            groupedPosts.push(shuffledPosts.slice(i, i + postsPerRow));
+        }
+
+        // Pass the user data if logged in and the grouped posts
+        const user = req.session.userId ? { username: req.session.username } : null;
+
+        // Render the home template with the grouped posts
+        res.render('blogs', { groupedPosts, user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching approved posts.');
+    }
 });
 
 myApp.get('/edit/:id', (req, res) => {
@@ -532,13 +564,9 @@ myApp.get('/payment-cancel', (req, res) => {
 });
 
 
-
-// Admin Dashboard Route
 // Admin Dashboard route
 myApp.get('/admin-dashboard', async (req, res) => {
     try {
-        // Fetch all blog posts that are not approved
-        const blogPosts = await Blog.find({ approved: false });
 
         // Fetch all education posts that are not approved
         const educationPosts = await Education.find({ approved: false });
@@ -549,7 +577,7 @@ myApp.get('/admin-dashboard', async (req, res) => {
         // Pass the user data even if it's an admin
         const user = req.session.userId ? { username: "example", role: "admin" } : null;
 
-        res.render('admin-dashboard', { user, blogPosts, educationPosts, crowdfundingPosts });
+        res.render('admin-dashboard', { user, educationPosts, crowdfundingPosts });
     } catch (err) {
         console.error(err);
         res.status(500).send('Error fetching unapproved posts for admin dashboard.');
@@ -578,7 +606,6 @@ myApp.post('/approve-blog/:id', async (req, res) => {
 });
 
 
-
 // Delete Blog Post Route
 myApp.post('/delete-blog/:id', (req, res) => {
     const postId = req.params.id;
@@ -603,7 +630,6 @@ myApp.post('/delete-blog/:id', (req, res) => {
         });
 });
 
-// Similar routes for Education and Crowdfunding posts
 // Approve Education Post Route
 myApp.post('/approve-education/:id', async (req, res) => {
     try {

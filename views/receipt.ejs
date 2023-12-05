@@ -36,6 +36,8 @@
     </style>
 </head>
 <body>
+    <%- include('nav') %>
+
     <div class="receipt-container">
         <h1>Receipt</h1>
         <p>Payment ID: <%= payment._id %></p>
@@ -43,5 +45,7 @@
         <p>Cardholder Name: <%= payment.cardHolderName %></p>
         <!-- Display other payment details here -->
     </div>
+    <%- include('footer') %>
+
 </body>
 </html>

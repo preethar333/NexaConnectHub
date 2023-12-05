@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <title>blog</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    nav {
+      background-color: #4B5B4C;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #d5e8d6;
+      margin: 0 15px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: color 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .postGrid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .postRow {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px; /* Adjust margin as needed */
+    }
+
+    .postData {
+      width: 30%; /* Adjust width as needed */
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px; /* Adjust margin as needed */
+    }
+
+    .table {
+      width: 100%;
+    }
+
+    .img-fluid {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .pay-now-button {
+  display: inline-block;
+  background-color: #4B5B4C;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.pay-now-button:hover {
+  background-color: #9EB09F;
+}
+.pay-now-button>a {
+  color:white;
+  text-decoration: none;
+}
+
+  </style>
+</head>
+
+<body class="blogs">
+  <%- include('nav') %>
+
+
+  <div class="container">
+    <h1 class="text-center">Latest Posts</h1>
+    <section>
+      <div class="postGrid">
+
+        <% groupedPosts.forEach(function(row) { %>
+          <div class="postRow">
+            <% row.forEach(function(post) { %>
+              <div class="postData">
+                <!-- Display post information -->
+                <table class="table">
+                  <tr>
+                    <th>Name: </th>
+                    <td><%= post.Name %></td>
+                  </tr>
+                  <tr>
+                    <th>Email: </th>
+                    <td><%= post.Email %></td>
+                  </tr>
+                  <tr>
+                    <th>Description: </th>
+                    <td><%- post.Description %></td>
+                  </tr>
+                  <tr>
+                    <th>Image: </th>
+                    <td><img src="<%= post.ImagePath %>" alt="No image found" class="img-fluid"></td>
+                  </tr>
+                </table>
+                <div class="pay-now-button">
+                  <% if (post.postType === 'education') { %>
+                    <!-- Button for education post -->
+                    <a href="/payment?blogid=<%= post.educationPostId %>" class="pay-button">Pay Now</a>
+                  <% } else if (post.postType === 'crowdfunding') { %>
+                    <!-- Button for crowdfunding post -->
+                    <a href="/payment?blogid=<%= post.crowdfundingPostId %>" class="pay-button">Pay Now</a>
+                  <% } %>                  
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% }) %>
+
+      </div>
+    </section>
+  </div>
+  <%- include('footer') %>
+
+</body>
+
+</html>

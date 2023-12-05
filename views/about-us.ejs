@@ -33,26 +33,13 @@
       line-height: 1.6;
       color: #666;
     }
-  </style>
+      </style>
 
 </head>
 
 <body>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/blogs">View All Blogs</a>
-    <a href="/education">View All Education Posts</a>
-    <a href="/crowdfunding">View All Crowdfunding Posts</a>
-    <a href="/add-post">Add Post</a>
+  <%- include('nav') %>
 
-    <% if (user) { %>
-      <span style="color:white">Welcome, <%= user.username %></span>
-      <a href="/logout">Logout</a>
-    <% } else { %>
-      <a href="/login">Login</a>
-      <a href="/signup">Signup</a>
-    <% } %>
-  </nav>
 
   <!-- Header Section -->
   <header>
@@ -103,8 +90,10 @@
 
   <!-- Footer Section -->
   <footer>
-    <p>&copy; 2023 Nexaconnect Hub, Team-07. All rights reserved.</p>
+    <%- include('footer') %>
+
   </footer>
+
 
 </body>
 

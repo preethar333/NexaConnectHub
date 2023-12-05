@@ -1,0 +1,38 @@
+<head>
+    <style>
+        nav {
+      background-color: #4B5B4C;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #d5e8d6;
+      margin: 0 15px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: color 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    </style>
+</head>
+<nav>
+    <a href="/">Home</a>
+    <a href="/blogs">View All Blogs</a>
+    <a href="/education">View All Education Posts</a>
+    <a href="/crowdfunding">View All Crowdfunding Posts</a>
+    <% if (user) { %>
+        <span style="color:white">Welcome, <%= user.username %></span>
+        <span style="margin-left: 10px;">|</span> <!-- Add some spacing or styling -->
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/signup">Signup</a>
+      <% } %>
+      
+  </nav>
