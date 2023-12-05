@@ -12,6 +12,9 @@
   <title>Admin Dashboard</title>
 
   <style>
+    main{
+      max-width:60%;
+      }
     .postGrid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -84,8 +87,7 @@
         <td><%= educationPost.Email %></td>
       </tr>
       <tr>
-        <th>Description: </th>
-        <td><%= educationPost.Description %></td>
+        <td><%- educationPost.Description %></td>
       </tr>
       <tr>
         <th>Image: </th>
@@ -121,7 +123,6 @@
         <td><%= crowdfundingPost.Email %></td>
       </tr>
       <tr>
-        <th>Description: </th>
         <td><%= crowdfundingPost.Description %></td>
       </tr>
       <tr>
