@@ -19,15 +19,19 @@
 
   <body>
     <nav>
-      <a href="/add-education">Add Education Post</a>
-      <a href="/add-Crowdfunding">Add Crowdfunding Post</a>
+      <a href="/">Home</a>
+      <a href="/blogs">View All Blogs</a>
       <a href="/education">View All Education Posts</a>
       <a href="/crowdfunding">View All Crowdfunding Posts</a>
-      <a href="/blogs">View All Blogs</a>
-      <a href="/login">login</a>
-      <a href="/signup">Signup</a>
-      <a href="/admin-dashboard">Admin Dashboard</a>
-
+      <a href="/add-post">Add Post</a>
+  
+      <% if (user) { %>
+        <span style="color:white">Welcome, <%= user.username %></span>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/signup">Signup</a>
+      <% } %>
     </nav>
     <main>
       <h1>Add new Blog</h1>

@@ -15,15 +15,85 @@
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>Home</title>
+    <style>
+      body {
+        background-color: #f5f5f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #4B5B4C;
+      }
+  
+      nav {
+        background-color: #4B5B4C;
+        padding: 15px;
+        text-align: center;
+      }
+  
+      nav a {
+        color: #d5e8d6;
+        margin: 0 15px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s ease-in-out;
+      }
+  
+      nav a:hover {
+        color: white;
+        text-decoration: none;
+      }
+  
+      main {
+        padding: 20px;
+      }
+  
+      h1 {
+        text-align: center;
+        color: #4B5B4C;
+      }
+  
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+  
+      .wrapper {
+        margin-bottom: 20px;
+      }
+  
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+  
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+  
+      .error {
+        color: red;
+        margin-top: -10px;
+        margin-bottom: 10px;
+      }
+  
+      .submission {
+        text-align: center;
+      }
+      
+      form {
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /* Add this line for box shadow */
+    padding:20px;
+  }
+    </style>
   </head>
 
   <body>
-    <nav>
-      <a href="/blogs">View All Blogs</a>
-      <a href="/login">login</a>
-      <a href="/signup">Signup</a>
-      <a href="/">Add New Blog</a> 
-    </nav>
+    
     <main>
       <h1>Add new Education Post</h1>
       <form action="education-process" method="POST" enctype="multipart/form-data">

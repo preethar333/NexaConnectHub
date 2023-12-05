@@ -42,22 +42,36 @@
       .pay-button:hover {
         background-color: #4B5B4C;
       }
+      .add-post-button {
+  display: inline-block;
+  background-color: #4B5B4C;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.add-post-button:hover {
+  background-color: #9EB09F;
+}
     </style>
   </head>
   
   <body class="blog">
-    <nav>
-      <a href="/blogs">View All Blogs</a>
-      <a href="/login">Login</a>
-      <a href="/signup">Signup</a>
-      <a href="/">Add New Blog</a>
-    </nav>
+   
     <main>
       <div class="container"> 
         <h1>All Crowdfunding Posts</h1>
+        <a href="/add-crowdfunding" class="add-post-button">Add New Post</a>
         <section>
           <div class="blogGrid">
+                      
             <% crowdfundingPosts.forEach(function(crowdfundingPost) { %>
+
               <div class="blogData">
                 <table>
                   <tr>

@@ -286,27 +286,45 @@ myApp.post('/crowdfunding-process', [
         const crowdfundingPost = new Crowdfunding(crowdfundingData);
         crowdfundingPost.save();
 
-        res.render('crowdfundingview', crowdfundingData);
+        const user = req.session.userId ? { username: req.session.username } : null;
+        
+        // Define crowdfundingPosts variable here
+        const crowdfundingPosts = [crowdfundingData];
+
+        console.log('Crowdfunding Posts:', crowdfundingPosts);
+
+        res.render('crowdfundingview', { crowdfundingData, user });
     }
 });
 
-myApp.get('/crowdfunding', (req, res) => {
-    // Fetch the crowdfundingPosts data from your database
-    Crowdfunding.find({})
-      .then((crowdfundingPosts) => {
-        res.render('crowdfundingview', { crowdfundingPosts: crowdfundingPosts });
-      })
-      .catch((err) => {
+myApp.get('/crowdfunding', async (req, res) => {
+    try {
+        // Fetch the crowdfundingPosts data from your database
+        const crowdfundingPosts = await Crowdfunding.find({});
+        const user = req.session.userId ? { username: req.session.username } : null;
+
+        console.log('Crowdfunding Posts:', crowdfundingPosts);
+        console.log('User:', user);
+
+        // Pass the crowdfundingPosts and user variables to the rendering context
+        res.render('crowdfundingview', { crowdfundingPosts, user });
+    } catch (err) {
         console.error(err);
         // Handle the error (e.g., render an error page)
-      });
+        res.status(500).send('Error fetching crowdfunding posts.');
+    }
 });
+
 
   myApp.get('/add-crowdfunding', (req, res) => {
-    res.render('add-crowdfunding'); 
+    const user = req.session.userId ? { username: req.session.username } : null;
+    const Name = req.body.Name || '';  // Set default values if not present
+    const Email = req.body.Email || '';
+    const Description = req.body.Description || '';
+
+res.render('add-crowdfunding', { Name, Email, Description, user});
 });
  
-
 
 myApp.post('/education-process', [
     check('Description', 'Please enter a description.').not().isEmpty(),
@@ -341,6 +359,8 @@ myApp.post('/education-process', [
         educationPost.save();
 
         res.render('educationPost', educationData);
+        res.redirect('/education');
+
     }
 });
 
@@ -348,7 +368,7 @@ myApp.post('/education-process', [
     // Fetch the educationPosts data from your database
     Education.find({})
       .then((educationPosts) => {
-        res.render('educationview', { educationPosts: educationPosts });
+        res.render('educationview', { educationPosts: educationPosts,  user: req.session.userId ? { username: req.session.username } : null });
       })
       .catch((err) => {
         console.error(err);
@@ -358,9 +378,16 @@ myApp.post('/education-process', [
 
 
 myApp.get('/add-education', (req, res) => {
-    res.render('add-education'); 
-});
+    const user = req.session.userId ? { username: req.session.username } : null;
+    const Name = req.body.Name || '';  // Use req.query instead of req.body
+    const Email = req.body.Email || '';
+    const Description = req.body.Description || '';
 
+    // Define the errors variable or provide a default empty array
+    const errors = [];
+
+    res.render('add-education', { Name, Email, Description, user, er: errors });
+});
 
 
 

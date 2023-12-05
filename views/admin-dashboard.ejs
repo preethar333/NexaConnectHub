@@ -64,19 +64,19 @@
 
 <body class="admin-dashboard">
   <nav>
-    <a href="/admin-dashboard">Admin Dashboard</a>
+    <a href="/">Home</a>
     <a href="/blogs">View All Blogs</a>
     <a href="/education">View All Education Posts</a>
     <a href="/crowdfunding">View All Crowdfunding Posts</a>
+    <a href="/add-post">Add Post</a>
+
     <% if (user) { %>
-      <!-- Display Logout when the user is logged in -->
-      <li><a href="/logout">Logout</a></li>
+      <span style="color:white">Welcome, <%= user.username %></span>
+      <a href="/logout">Logout</a>
     <% } else { %>
-      <!-- Display Login and Signup when the user is not logged in -->
-      <li><a href="/login">Login</a></li>
-      <li><a href="/signup">Signup</a></li>
+      <a href="/login">Login</a>
+      <a href="/signup">Signup</a>
     <% } %>
-    
   </nav>
   <main>
     <div class="container">
