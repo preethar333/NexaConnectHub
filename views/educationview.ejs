@@ -67,6 +67,25 @@
       border: 2px solid #4B5B4C;
       position: relative; /* Added for positioning */
     }
+    .description-container {
+    max-height: 100px; /* Set the initial max height to show only a portion of the description */
+    overflow: hidden;
+    position: relative;
+  }
+
+  .description-container.expanded {
+    max-height: none; /* Remove the max height when expanded */
+  }
+
+  .description-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 20px; /* Adjust as needed to create space for "Read More" link */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white); /* Create a gradient fade effect */
+  }
 
    
     </style>
@@ -98,8 +117,13 @@
                 <td><%= educationPost.Email %></td>
             </tr>
             <tr>
-                
-                <td><%- educationPost.Description %></td>
+              <td>
+                <div class="description-container" id="postDescription<%= educationPost.id %>">
+                  <%- educationPost.Description %>
+                </div>
+                <!-- Read More link -->
+                <a href="#" onclick="toggleDescription('<%= educationPost.id %>')">Read More</a>
+              </td>
             </tr>
             <tr>
                 <th>Image: </th>
@@ -119,6 +143,13 @@
       </div> 
     </main>
     <%- include('footer') %>
+    <script>
+      // JavaScript function to toggle the display of the full description
+      function toggleDescription(educationpostId) {
+        var descriptionContainer = document.getElementById('postDescription' + educationpostId);
+        descriptionContainer.classList.toggle('expanded');
+      }
+    </script>
     
     
 

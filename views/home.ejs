@@ -5,6 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Home Page</title>
+  <script>
+    // JavaScript function to toggle the display of the full description
+    function toggleDescription(postId) {
+      var descriptionContainer = document.getElementById('postDescription' + postId);
+      descriptionContainer.classList.toggle('expanded');
+    }
+  </script>
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -14,6 +21,17 @@
       background-color: #f5f5f5;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
+    body, html {
+  margin: 0;
+  padding: 0;
+}
+
+.container{
+  min-width: 80%; 
+  max-width: 90%; 
+
+}
 
     nav {
       background-color: #4B5B4C;
@@ -27,6 +45,11 @@
       font-weight: bold;
       text-decoration: none;
       transition: color 0.3s ease-in-out;
+    }
+
+    h1,h2,h3{
+      color: #4B5B4C;
+
     }
 
     nav a:hover {
@@ -90,6 +113,7 @@
 .about-us-image {
   flex: 1;
   text-align: center;
+  margin:20px;
 }
 .img-fluid {
     width:500px;
@@ -128,6 +152,10 @@
     main {
       padding: 20px;
       color: #4B5B4C;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+
     }
 
     footer {
@@ -145,41 +173,43 @@
     footer:hover {
       background-color: #2a3d33;
     }
-    .postGrid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-    }
-
-    .postData {
-      margin: 10px 0;
-    }
-
+   
     .card {
       width: 100%;
     }
 
     .postGrid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-    }
+  max-width: 100%; /* Adjust max-width as needed */
+  margin: 0 auto; /* Center the content */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
 
     .postRow {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px; /* Adjust margin as needed */
-    }
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  max-height: 70%;
+}
 
-    .postData {
-      width: 30%; /* Adjust width as needed */
-      background-color: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px; /* Adjust margin as needed */
-    }
+.postData {
+  width: calc(33.33% - 10px); /* Adjust width as needed */
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px; /* Adjust margin as needed */
+  transition: transform 0.3s ease-in-out;
+
+}
+
+
+  .postData:hover {
+    transform: scale(1.05);
+  }
 
     .table {
       width: 100%;
@@ -191,18 +221,20 @@
       border-radius: 8px;
     }
     .pay-now-button {
-  display: inline-block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   background-color: #4B5B4C;
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 0;
   text-decoration: none;
   font-size: 16px;
-  margin-top: 10px;
   cursor: pointer;
+  z-index: 2; /* Set a higher z-index value */
 }
-
 .pay-now-button:hover {
   background-color: #9EB09F;
 }
@@ -210,6 +242,134 @@
   color:white;
   text-decoration: none;
 }
+.description-container {
+    max-height: 100px; 
+    overflow: hidden;
+    position: relative;
+    max-width:100%;
+    width:100%;
+
+  }
+
+  .description-container.expanded {
+    max-height: none;
+  }
+
+  .description-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    height: 20px; 
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white); /* Create a gradient fade effect */
+  }
+  #chatbot-container {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    max-width: 300px;
+    background-color:#4B5B4C;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    color:#f5f5f5;
+    padding-bottom:30px;
+  }
+
+  #chatbot-container.minimized {
+    width: 140px;
+    height: 40px;
+    overflow: hidden;
+    padding: 10;
+
+  }
+
+  #chatbot-container.minimized #chatbot-messages {
+    display: none;
+  }
+
+  #chatbot-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-wrap: break-word;
+    }
+
+    .user {
+      background-color: #4B5B4C;
+      color: #fff;
+      align-self: flex-start;
+    }
+
+    .bot {
+      background-color: #fff;
+      color: #4B5B4C;
+      align-self: flex-end;
+    }
+
+    .icon {
+      margin-right: 10px;
+    }
+
+    .user .icon {
+      color: #fff;
+    }
+
+    .bot .icon {
+      color: #4B5B4C;
+    }
+  #user-input {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    padding: 8px;
+    border: none;
+    background-color: #4B5B4C;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #2a3d33;
+  }
+
+  /* Close and minimize/maximize buttons */
+  #chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  #chatbot-header .close-icon,
+  #chatbot-header .minimize-icon,
+  #chatbot-header .maximize-icon {
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #chatbot-header .close-icon:hover,
+  #chatbot-header .minimize-icon:hover,
+  #chatbot-header .maximize-icon:hover {
+    color: #ff6347; /* Red color for hover effect */
+  }
 
   </style>
 
@@ -268,7 +428,6 @@
     </div>
   </section>
 
-  <main>
     <div class="container">
       <h1 class="text-center">Latest Posts</h1>
       <section>
@@ -281,16 +440,17 @@
                   <!-- Display post information -->
                   <table class="table">
                     <tr>
-                      <th>Name: </th>
+                      <th>Author: </th>
                       <td><%= post.Name %></td>
                     </tr>
                     <tr>
-                      <th>Email: </th>
-                      <td><%= post.Email %></td>
-                    </tr>
-                    <tr>
-                      <th>Description: </th>
-                      <td><%- post.Description %></td>
+                      <td>
+                        <div class="description-container" id="postDescription<%= post.id %>">
+                          <%- post.Description %>
+                        </div>
+                        <!-- Read More link -->
+                        <a href="#" onclick="toggleDescription('<%= post.id %>')">Read More</a>
+                      </td>
                     </tr>
                     <tr>
                       <th>Image: </th>
@@ -306,6 +466,7 @@
                       <a href="/payment?blogid=<%= post.crowdfundingPostId %>" class="pay-button">Pay Now</a>
                     <% } %>                  
                   </div>
+                 
                 </div>
               <% }) %>
             </div>
@@ -315,7 +476,7 @@
       </section>
   
         </div>
-      </main>
+       
       
 
       <!-- About Us Section -->
@@ -341,14 +502,29 @@
       </section>
     </div>
   </main>
-
+  <div id="chatbot-container">
+    <div id="chatbot-header">
+      <div>Chat</div>
+      <div class="minimize-icon" onclick="toggleChatbot()">&#8211;</div>
+      <div class="maximize-icon" onclick="toggleChatbot(true)">&#43;</div>
+      <div class="close-icon" onclick="closeChatbot()">&times;</div>
+    </div>
+    <div id="chatbot-messages"></div>
+    <input type="text" id="user-input" placeholder="Type your message here">
+    <button onclick="sendMessage()">Send</button>
+  </div>
   <%- include('footer') %>
+
+  
+  
 
 
   <!-- Bootstrap JS (popper.js and jquery.js are required for Bootstrap) -->
+  <script src="/js/custom-chatbot.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

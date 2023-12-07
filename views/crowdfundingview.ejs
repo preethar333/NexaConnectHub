@@ -101,6 +101,16 @@
                       <a href="/payment?blogid=<%= crowdfundingPost._id %>" class="pay-button">Pay Now</a>
                     </td>
                   </tr>
+                  <tr>
+                    <td colspan="2">
+                      <a href="/edit-crowdfunding/<%= crowdfundingPost._id %>">
+                        <button class="add-post-button">Edit</button>
+                      </a>
+                      <a href="/delete-crowdfunding/<%= crowdfundingPost._id %>">
+                        <button class="add-post-button">Delete</button>
+                      </a>
+                    </td>
+                  </tr>
                 </table>
               </div>
             <% }) %>

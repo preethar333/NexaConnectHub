@@ -62,12 +62,45 @@
     .delete-button:hover {
       background-color: #FF2E00;
     }
+    .description-container {
+    max-height: 100px; /* Set the initial max height to show only a portion of the description */
+    overflow: hidden;
+    position: relative;
+  }
+
+  .description-container.expanded {
+    max-height: none; /* Remove the max height when expanded */
+  }
+
+  .description-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 20px; /* Adjust as needed to create space for "Read More" link */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white); /* Create a gradient fade effect */
+  }
   </style>
 </head>
 
 <body class="admin-dashboard">
-  <%- include('nav') %>
-
+  <nav>
+    <a href="/">Home</a>
+    <a href="/blogs">View All Blogs</a>
+    <a href="/education">View All Education Posts</a>
+    <a href="/crowdfunding">View All Crowdfunding Posts</a>
+    <a href="/admin-dashboard">Admin Dashboard</a>
+    <% if (user) { %>
+        <span style="color:white">Welcome, <%= user.username %></span>
+        <span style="margin-left: 10px;">|</span> <!-- Add some spacing or styling -->
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/signup">Signup</a>
+      <% } %>
+      
+  </nav>
   <main>
     <div class="container">
       <h1>Admin Dashboard</h1>
@@ -87,7 +120,13 @@
         <td><%= educationPost.Email %></td>
       </tr>
       <tr>
-        <td><%- educationPost.Description %></td>
+        <td>
+          <div class="description-container" id="postDescription<%= educationPost.id %>">
+            <%- educationPost.Description %>
+          </div>
+          <!-- Read More link -->
+          <a href="#" onclick="toggleDescription('<%= educationPost.id %>')">Read More</a>
+        </td>
       </tr>
       <tr>
         <th>Image: </th>
@@ -112,6 +151,7 @@
 <!-- Crowdfunding posts -->
 <% crowdfundingPosts.forEach(function(crowdfundingPost) { %>
   <div class="postData">
+    <h1>Admin Dashboard</h1>
     <!-- Display crowdfunding post information -->
     <table>
       <tr>
@@ -123,7 +163,13 @@
         <td><%= crowdfundingPost.Email %></td>
       </tr>
       <tr>
-        <td><%= crowdfundingPost.Description %></td>
+        <td>
+          <div class="description-container" id="postDescription<%= crowdfundingPost.id %>">
+            <%- crowdfundingPost.Description %>
+          </div>
+          <!-- Read More link -->
+          <a href="#" onclick="toggleDescription('<%= crowdfundingPost.id %>')">Read More</a>
+        </td>
       </tr>
       <tr>
         <th>Image: </th>
@@ -148,6 +194,14 @@
     </div>
   </main> 
   <%- include('footer') %>
+  <script>
+    // JavaScript function to toggle the display of the full description
+    function toggleDescription(postId) {
+      var descriptionContainer = document.getElementById('postDescription' + postId);
+      descriptionContainer.classList.toggle('expanded');
+    }
+  </script>
+  
 
 </body>
 

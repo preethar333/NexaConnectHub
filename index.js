@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 const nameRegex = /^[a-zA-Z0-9]{1,}\s[a-zA-Z0-9]{1,}$/;
 const fs = require('fs');
 
+
 mongoose.connect('mongodb://127.0.0.1:27017/NexaConnect');
 
 const ApprovedPost = mongoose.model('ApprovedPost', {
@@ -65,6 +66,8 @@ paypal.configure({
 });
 
 const myApp = express();
+myApp.use(express.static(__dirname + '/public'));
+
 myApp.use(express.urlencoded({ extended: false }));
 myApp.use(session({
     secret: 'randomsecretcode',
@@ -435,40 +438,98 @@ myApp.get('/blogs', async (req, res) => {
     }
 });
 
-myApp.get('/edit/:id', (req, res) => {
-    const blogId = req.params.id;
-    Blog.findById(blogId)
-        .then((blog) => {
-            res.render('edit', { blog });
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+
+// Edit Crowdfunding Post Route - GET
+myApp.get('/edit-crowdfunding/:id', async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const crowdfundingPost = await Crowdfunding.findById(postId);
+
+        if (!crowdfundingPost) {
+            return res.status(404).send('Crowdfunding post not found.');
+        }
+
+        const user = req.session.userId ? { username: req.session.username } : null;
+
+        res.render('edit-crowdfunding', { crowdfundingPost, user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching crowdfunding post for editing.');
+    }
 });
 
-myApp.post('/edit/:id', (req, res) => {
-    const blogId = req.params.id;
-    const { Name, Email, Description } = req.body;
+// Edit Crowdfunding Post Route - POST
+myApp.post('/edit-crowdfunding/:id', async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const { Name, Email, crowdfundingType, Description } = req.body;
 
-    Blog.findByIdAndUpdate(blogId, { Name, Email, Description }, { new: true })
-        .then((updatedBlog) => {
-            res.redirect(`/blogview/${updatedBlog._id}`);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+        // Update the crowdfunding post
+        const updatedCrowdfundingPost = await Crowdfunding.findByIdAndUpdate(
+            postId,
+            { Name, Email, crowdfundingType, Description },
+            { new: true }
+        );
+
+        if (!updatedCrowdfundingPost) {
+            return res.status(404).send('Crowdfunding post not found.');
+        }
+
+        res.redirect(`/crowdfundingPost/${postId}`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating crowdfunding post.');
+    }
+});
+myApp.get('/crowdfunding/:id', async (req, res) => {
+    try {
+        const postId = req.params.id;
+        // Fetch the crowdfunding post details from the database
+        const crowdfundingPost = await Crowdfunding.findById(postId);
+
+        if (!crowdfundingPost) {
+            return res.status(404).send('Crowdfunding post not found.');
+        }
+
+        // Render the EJS template with the crowdfunding post details
+        res.render('crowdfundingPost', { crowdfundingPost });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching crowdfunding post details.');
+    }
 });
 
-myApp.get('/delete/:id', (req, res) => {
-    const blogId = req.params.id;
-    Blog.findByIdAndRemove(blogId)
-        .then(() => {
-            res.redirect('/blogs');
-        })
-        .catch((err) => {
-            console.error(err);
+
+// Delete Crowdfunding Post Route
+myApp.get('/delete-crowdfunding/:id', async (req, res) => {
+    try {
+        const postId = req.params.id;
+
+        // Find the crowdfunding post to get the associated image path
+        const crowdfundingPost = await Crowdfunding.findById(postId);
+
+        if (!crowdfundingPost) {
+            return res.status(404).send('Crowdfunding post not found.');
+        }
+
+        // Remove the associated image file if needed
+        const imagePath = path.join(__dirname, crowdfundingPost.ImagePath);
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error('Error deleting image:', err);
+            }
         });
-});
+
+        // Delete the crowdfunding post
+        await Crowdfunding.findByIdAndRemove(postId);
+
+        res.redirect('/crowdfunding'); // Redirect to admin dashboard after deletion
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error deleting the crowdfunding post.');
+    }
+}); 
+
 
 myApp.get('/payment', (req, res) => {
     res.render('payment');
@@ -709,7 +770,7 @@ myApp.post('/delete-crowdfunding/:id', (req, res) => {
                     console.error('Error deleting image:', err);
                 }
             });
-            res.redirect('/admin-dashboard');
+            res.redirect('/');
         })
         .catch((error) => {
             console.error(error);
@@ -717,6 +778,8 @@ myApp.post('/delete-crowdfunding/:id', (req, res) => {
         });
 });
 
+
+  
 
 
 myApp.listen(8080, () => {

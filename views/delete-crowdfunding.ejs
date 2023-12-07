@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Crowdfunding Post</title>
+</head>
+<body>
+    <h1>Delete Crowdfunding Post</h1>
+    <% if (crowdfundingPost) { %>
+        <p>Are you sure you want to delete the crowdfunding post with the following details?</p>
+        <ul>
+            <li><strong>Name:</strong> <%= crowdfundingPost.Name %></li>
+            <li><strong>Email:</strong> <%= crowdfundingPost.Email %></li>
+            <li><strong>Crowdfunding Type:</strong> <%= crowdfundingPost.crowdfundingType %></li>
+            <li><strong>Description:</strong> <%= crowdfundingPost.Description %></li>
+        </ul>
+
+        <form action="/delete-crowdfunding/<%= crowdfundingPost._id %>" method="POST">
+            <button type="submit">Delete</button>
+        </form>
+    <% } else { %>
+        <p>Crowdfunding post not found.</p>
+    <% } %>
+
+    <a href="/crowdfunding">Back to Crowdfunding</a>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!-- postDetail.ejs -->
+<%- include('nav') %>
+
+<main>
+    <h1>Post Details</h1>
+    <section>
+        <div class="blogData">
+            <table class="table">
+                <tr>
+                    <th>Name:</th>
+                    <td><%= post.Name %></td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td><%= post.Email %></td>
+                </tr>
+                <tr>
+                    <th>Description:</th>
+                    <td><%= post.Description %></td>
+                </tr>
+                <tr>
+                    <th>Image:</th>
+                    <td><img src="<%= post.ImagePath %>" alt="No image found" class="img-fluid"></td>
+                </tr>
+                <!-- Add more fields as needed -->
+            </table>
+        </div>
+    </section>
+</main>
