@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const axios = require('axios');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const { check, validationResult } = require('express-validator');
@@ -57,6 +58,14 @@ const Payment = mongoose.model('Payment', {
     email: String,
     country: String,
 });
+
+const newsSchema = new mongoose.Schema({
+    headline: String,
+    link: String,
+    image: String,
+  });
+  
+  const News = mongoose.model('News', newsSchema);
 
 const paypal = require('paypal-rest-sdk');
 paypal.configure({
@@ -778,6 +787,39 @@ myApp.post('/delete-crowdfunding/:id', (req, res) => {
         });
 });
 
+const apiKey = '0a4a8f53e7014da8bb536dcb99617b76';
+const apiUrl = 'https://newsapi.org/v2/top-headlines';
+
+myApp.get('/news', async (req, res) => {
+  try {
+    const response = await axios.get(apiUrl, {
+      params: {
+        apiKey: apiKey,
+        country:  ['us','ca','in','uk'],
+        category: ['general','business','sports','earthquake','terrorism','earthquake','wildfire','hurricane','flood','tornado','tsunami', 'natural disaster']
+      },
+    });
+
+    const articles = response.data.articles;
+
+    // Save news to MongoDB
+    const newsData = articles.map(article => ({
+      headline: article.title,
+      link: article.url,
+     image: article.urlToImage,
+    
+    }));
+
+    await News.deleteMany({}); 
+    await News.insertMany(newsData);
+
+    res.render('news', { articles, user: req.user });
+
+  } catch (error) {
+    console.error('Error fetching or saving news:', error);
+    res.status(500).send('Error fetching or saving news');
+  }
+});
 
   
 

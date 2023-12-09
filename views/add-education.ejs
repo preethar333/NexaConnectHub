@@ -10,6 +10,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+          new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages:  'es,fr,de,it,pt,ru,hi,ja,ko,zh-CN,zh-TW,ar,th,tr,vi,el,gu,he,la,ta,te,ur,doi,mr,ne,sr,af,nl,pa,pl,sv,da', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+      }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&display=swap" rel="stylesheet">
@@ -89,6 +95,12 @@
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /* Add this line for box shadow */
     padding:20px;
   }
+  #google_translate_element {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
     </style>
   </head>
 
@@ -149,7 +161,7 @@
       })
     </script>
       <%- include('footer') %>
-
+      <div id="google_translate_element"></div>
   </body>
 
   </html>

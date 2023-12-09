@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<html lang="zh-CN" dir="ltr"></html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,es,fr,de,it,pt,ru,hi,ja,ko,zh-CN,zh-TW,ar,th,tr,vi,el,gu,he,la,ta,te,ur,doi,mr,ne,sr,af,nl,pa,pl,sv,da', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <title>Latest News</title>
+  <style>
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+nav {
+      background-color: #4B5B4C;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #d5e8d6;
+      margin: 0 15px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: color 0.3s ease-in-out;
+    }
+
+    nav a:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  background-color: #d5e8d6;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color:#4B5B4C;
+}
+
+ul.news-grid {
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.news-item {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  height: 400px; /* Adjust the height as needed */
+  display: flex;
+  flex-direction: column;
+}
+
+.news-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 30px;
+  padding:20px;
+  border: 2px solid black;
+  background-color: whitesmoke;
+}
+
+.news-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #4B5B4C;
+  margin-bottom: 10px;
+}
+.news-image {
+  flex: 1; /* This allows the image to take up the remaining space */
+  overflow: hidden; /* Hide any overflowing content within the image container */
+
+}
+
+.news-image img {
+  max-width: 100%;
+  height: auto;
+ /* width: 100%; /* Ensure the image takes up the full width of its container */
+  border-radius: 8px;
+}
+.news-image img:hover {
+  transform: scale(1.1); /* Adjust the scaling factor as needed */
+  transition: transform 0.3s ease;
+}
+.news-link a {
+    display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+   
+  padding: 8px 16px;
+  background-color:#4B5B4C;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.news-link a:hover {
+  background-color: #0056b3;
+}
+#google_translate_element {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
+
+
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/blogs">View All Blogs</a>
+    <a href="/education">View All Education Posts</a>
+    <a href="/crowdfunding">View All Crowdfunding Posts</a>
+
+    <% if (user) { %>
+      <span style="color:white">Welcome, <%= user.username %></span>
+      <a href="/logout">Logout</a>
+    <% } else { %>
+      <a href="/login">Login</a>
+      <a href="/signup">Signup</a>
+    <% } %>
+  </nav>
+  <div class="container">
+    <h1>Latest News</h1>
+    
+    <ul class="news-grid">
+      <% articles.forEach(article => { %>
+        <li class="news-item">
+          <div class="news-container">
+            <div class="news-title"><%= article.title %></div>
+             <div class="news-image">
+               <img src="<%= article.urlToImage %>" alt="<%= article.title %>">
+            </div> 
+           
+            <div class="news-link">
+              <a href="<%= article.url %>" target="_blank">Read More</a>
+            </div>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+  
+  <div id="google_translate_element"></div>
+</body>
+
+</html>
